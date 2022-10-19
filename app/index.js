@@ -14,21 +14,39 @@ async function run() {
         repo: github.context.repo.repo,
         run_id: github.context.runId
     }).then((response) => {
-        
+
         let env_id = [];
-        let env_name ='';
+        let env_name = '';
         let isReviewer = false;
         response.data.forEach(env => {
-            env_id.push(env.environment.id);      
-            env_name = env_name+ env.environment.name+',';   
+            env_id.push(env.environment.id);
+            env_name = env_name + env.environment.name + ',';
 
             // check if the current user is a reviewer for the environment
-            env.reviewers.forEach(reviewer => {
-                console.log(reviewer);
-                if(reviewer.login == github.context.actor){
-                    isReviewer = true;
+            env.reviewers.forEach(reviewerObj => {
+                // If the reviewer is a User
+                if (reviewerObj.type == 'User') {
+                    console.log('Reviewer is a User '+reviewerObj.reviewer.login);
+                    if (reviewerObj.reviewer.login == github.context.actor) {                        
+                        isReviewer = true;
+                    }
                 }
-            });   
+                // If the reviewer is a Team
+                if (reviewerObj.type == 'Team') {
+                    octokit.rest.teams.getMembershipForUserInOrg({
+                        org: github.context.repo.owner,
+                        team_slug: reviewerObj.reviewer.slug,
+                        username: github.context.actor
+                    }).then((response) => {
+                        console.log(` team membership checked for ${github.context.actor} in team ${reviewerObj.reviewer.slug}`);
+                        console.log(` response: ${response.status}`);
+                        if (response.status == 200) {
+                            isReviewer = true;
+                        }
+                    }); 
+
+                }
+            });
         });
 
         // Approve, in case of there is any pending review requests
@@ -40,7 +58,7 @@ async function run() {
                 run_id: github.context.runId,
                 environment_ids: env_id,
                 state: 'approved',
-                comment: 'Auto-Approved by GitHub Action for environments '+env_name
+                comment: 'Auto-Approved by GitHub Action for environments ' + env_name
             });
         }
 
