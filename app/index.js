@@ -53,6 +53,7 @@ async function run() {
                     });;
 
                 }
+                console.log('step Reviewers: ' + (envReviewers.join(','))); 
             });
         });
 
@@ -60,9 +61,7 @@ async function run() {
         if (!isReviewer) {
             // Writing to build log            
             core.notice('Auto Approval Not Possible; current user is not a reviewer for the environment(s) - ' + env_name);
-            core.info('Reviewers: ' + (envReviewers.join(',')));       
-            console.log('reviewers: ' + envReviewers.join(','));
-            console.log('reviewers: ' + envReviewers.toString());
+            core.info('Reviewers: ' + (envReviewers.join(','))); 
             return;    
         } else {
             // Approve, in case of there is any pending review requests
