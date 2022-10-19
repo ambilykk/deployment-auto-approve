@@ -3,6 +3,8 @@ Automatic approval of pending deployments that are waiting on approval by a requ
 
 *Note: Required reviewers with read access to the repository contents and deployments can use this action to bypass the approval*
 
+**User Scenario ** There is no out of the box control to pre-approve workflows. The jobs that are protected by environment must be approved only once all previous jobs are completed. As a result, we had to come back to workflow at the right time to approve steps for the changes we are confident.
+
 
 # How to Use the Action
 
