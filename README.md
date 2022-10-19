@@ -22,7 +22,7 @@ Sample workflow defines three jobs - First, Second and Third. Third job runs on 
 
 ![env protection rule](https://user-images.githubusercontent.com/10282550/196625488-6ecf132d-8e1f-443f-8c22-7a8a0223a314.png)
 
-Auto Approval is controlled using the workflow input - **approve_deploy**
+Auto Approval is controlled using the workflow input - **approve_deploy** [custom input variable]
 
 ```
 jobs:
