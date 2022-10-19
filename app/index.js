@@ -8,15 +8,34 @@ const octokit = github.getOctokit(GITHUB_TOKEN);
 
 async function run() {
 
-    // create the translated comment
-    await octokit.rest.actions.reviewPendingDeploymentsForRun({
+    await octokit.rest.actions.getPendingDeploymentsForRun({
         owner: github.context.repo.owner,
         repo: github.context.repo.repo,
-        run_id: github.context.runId,
-        environment_ids: [github.context.environmentId],
-        state: 'approved',
-        Comment: 'Auto-Approved by GitHub Action'
+        run_id: github.context.runId
+    }).then((response) => {
+        console.log(`Response data`);
+        console.log(response);
+
+        let env_id =[];
+        response.forEach(env => {
+            env_id.push(env.environment.id);   
+            console.log(env.environment);         
+        });
+        // Approve the pending deployment reviews
+        await octokit.rest.actions.reviewPendingDeploymentsForRun({
+            owner: github.context.repo.owner,
+            repo: github.context.repo.repo,
+            run_id: github.context.runId,
+            environment_ids: env_id,
+            state: 'approved',
+            Comment: 'Auto-Approved by GitHub Action'
+        });
+
+    }).catch((error) => {
+        console.log(error);
     });
+
+
 }
 
 // run the action code
