@@ -25,7 +25,7 @@ async function run() {
             env_name = env_name + env.environment.name + ',';
 
             // check if the current user is a reviewer for the environment
-            env.reviewers.forEach(reviewerObj => {
+            env.reviewers.forEach(async reviewerObj => {
                 // If the reviewer is a User
                 if (reviewerObj.type == 'User' && !isReviewer) {
                     console.log('Reviewer is a User - ' + reviewerObj.reviewer.login);
