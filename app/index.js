@@ -22,7 +22,7 @@ async function run() {
             console.log(env.environment);         
         });
         // Approve the pending deployment reviews
-        await octokit.rest.actions.reviewPendingDeploymentsForRun({
+        octokit.rest.actions.reviewPendingDeploymentsForRun({
             owner: github.context.repo.owner,
             repo: github.context.repo.repo,
             run_id: github.context.runId,
