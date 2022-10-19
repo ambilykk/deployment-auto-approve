@@ -19,16 +19,14 @@ async function run() {
         let env_name = '';
         let reviewers = [];
         let isReviewer = false;
-        //response.data.forEach(env => {
-        for (let env of response.data) {
+        response.data.forEach(env => {
             env_id.push(env.environment.id);
             env_name = env_name + env.environment.name + ',';
 
             // check if the current user is a reviewer for the environment
-            //env.reviewers.forEach(reviewerObj => {
-            for (let reviewerObj of env.reviewers) {
+            env.reviewers.forEach(reviewerObj => {
                 // If the reviewer is a User
-                if (reviewerObj.type == 'User') {
+                if (reviewerObj.type == 'User' && !isReviewer) {
                     console.log('Reviewer is a User - ' + reviewerObj.reviewer.login);
                     if (reviewerObj.reviewer.login == github.context.actor) {
                         isReviewer = true;
@@ -36,7 +34,7 @@ async function run() {
                     }
                 }
                 // If the reviewer is a Team
-                if (reviewerObj.type == 'Team') {
+                if (reviewerObj.type == 'Team' && !isReviewer) {
                     reviewers.push(reviewerObj.reviewer.name);
 
                     octokit.rest.teams.getMembershipForUserInOrg({
@@ -47,23 +45,15 @@ async function run() {
                         console.log(` team membership checked for ${github.context.actor} in team ${reviewerObj.reviewer.slug}`);
                         console.log(` response: ${response.status}`);
                         if (response.status == 200) {
-                            isReviewer = true;                            
+                            isReviewer = true;
                         }
                     }).catch((error) => {
                         console.log(` team membership check failed for ${github.context.actor} in team ${reviewerObj.reviewer.name}`);
                     });;
 
                 }
-                if(isReviewer){
-                    console.log('break from inner loop');
-                    break;
-                }
-            };
-            if(isReviewer){
-                console.log('break from outer loop');
-                break;
-            }
-        };
+            });
+        });
 
         // if the current user is not a reviewer, display the list of reviewers and exit
         if (!isReviewer) {
