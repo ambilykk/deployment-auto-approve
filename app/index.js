@@ -59,6 +59,7 @@ async function run() {
         if (!isReviewer) {
             core.summary.addHeading(' :fire: Auto Approval Status');
             core.summary.addQuote('Reviewers: ' +reviewers.toString());
+            core.summary.write();
         } else {
             // Approve, in case of there is any pending review requests
             if (typeof env_id !== 'undefined' && env_id.length > 0) {
@@ -74,6 +75,7 @@ async function run() {
 
                 core.summary.addHeading(' :white_check_mark: Auto Approval Status');
                 core.summary.addQuote('Auto-Approved by GitHub Action. Reviewer: ' + github.context.actor);
+                core.summary.write();
             }
         }
 
