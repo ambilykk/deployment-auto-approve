@@ -19,7 +19,8 @@ async function run() {
         let env_name = '';
         let reviewers = [];
         let isReviewer = false;
-        response.data.forEach(env => {
+        //response.data.forEach(env => {
+        for (let env of response.data) {
             env_id.push(env.environment.id);
             env_name = env_name + env.environment.name + ',';
 
@@ -57,7 +58,10 @@ async function run() {
                     break;
                 }
             };
-        });
+            if(isReviewer){
+                break;
+            }
+        };
 
         // if the current user is not a reviewer, display the list of reviewers and exit
         if (!isReviewer) {
