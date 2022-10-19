@@ -17,7 +17,7 @@ async function run() {
 
         let env_id = [];
         let env_name = '';
-        let reviewers =[];
+        let reviewers = [];
         let isReviewer = false;
         response.data.forEach(env => {
             env_id.push(env.environment.id);
@@ -47,7 +47,9 @@ async function run() {
                         if (response.status == 200) {
                             isReviewer = true;
                         }
-                    });
+                    }).catch((error) => {
+                        console.log(` team membership check failed for ${github.context.actor} in team ${reviewerObj.reviewer.name}`);
+                    });;
 
                 }
             });
