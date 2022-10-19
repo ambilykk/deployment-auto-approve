@@ -57,9 +57,9 @@ async function run() {
 
         // if the current user is not a reviewer, display the list of reviewers and exit
         if (!isReviewer) {
-            core.summary.addHeading(' :fire: Auto Approval Status');
-            core.summary.addQuote('Reviewers: ' +reviewers.toString());
-            core.summary.write();
+            // Writing to build log            
+            core.notice('Auto Approval Not Possible; current user is not a reviewer for the environment(s) - ' + env_name);
+            core.info('Reviewers: ' +reviewers.toString());
         } else {
             // Approve, in case of there is any pending review requests
             if (typeof env_id !== 'undefined' && env_id.length > 0) {
@@ -70,9 +70,9 @@ async function run() {
                     run_id: github.context.runId,
                     environment_ids: env_id,
                     state: 'approved',
-                    comment: 'Auto-Approved by GitHub Action for environments ' + env_name
+                    comment: 'Auto-Approved by GitHub Action for environment(s) - ' + env_name
                 });
-
+                // Adding to deployment Summary
                 core.summary.addHeading(' :white_check_mark: Auto Approval Status');
                 core.summary.addQuote('Auto-Approved by GitHub Action. Reviewer: ' + github.context.actor);
                 core.summary.write();
