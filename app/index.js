@@ -17,13 +17,22 @@ async function run() {
         
         let env_id = [];
         let env_name ='';
+        let isReviewer = false;
         response.data.forEach(env => {
             env_id.push(env.environment.id);      
-            env_name = env_name+ env.environment.name+',';      
+            env_name = env_name+ env.environment.name+',';   
+
+            // check if the current user is a reviewer for the environment
+            env.reviewers.forEach(reviewer => {
+                console.log(reviewer);
+                if(reviewer.login == github.context.actor){
+                    isReviewer = true;
+                }
+            });   
         });
 
         // Approve, in case of there is any pending review requests
-        if (typeof env_id !== 'undefined' && env_id.length > 0) {
+        if (typeof env_id !== 'undefined' && env_id.length > 0 && isReviewer) {
             // Approve the pending deployment reviews
             octokit.rest.actions.reviewPendingDeploymentsForRun({
                 owner: github.context.repo.owner,
