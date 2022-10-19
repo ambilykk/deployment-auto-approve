@@ -1,0 +1,23 @@
+{
+  "name": "deployment-auto-approve",
+  "version": "1.0.0",
+  "description": "Auto approval of deployment reviews",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/techrill88/deployment-auto-approve.git"
+  },
+  "author": "ambilykk",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/techrill88/deployment-auto-approve/issues"
+  },
+  "homepage": "https://github.com/techrill88/deployment-auto-approve#readme",
+  "dependencies": {
+    "@actions/core": "^1.10.0",
+    "@actions/github": "^5.1.0"
+  }
+}

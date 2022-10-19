@@ -1,0 +1,12 @@
+name: 'Deployment Auto Approve'
+description: 'Automatic approval of Deployment reviews'
+branding:
+  icon: 'check'
+  color: 'green'
+inputs:
+  GITHUB_TOKEN:
+    description: 'GitHub token'
+    required: true
+runs:
+  using: 'node16'
+  main: 'app/index.js'
