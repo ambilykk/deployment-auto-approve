@@ -24,7 +24,8 @@ async function run() {
             env_name = env_name + env.environment.name + ',';
 
             // check if the current user is a reviewer for the environment
-            env.reviewers.forEach(reviewerObj => {
+            //env.reviewers.forEach(reviewerObj => {
+            for (let reviewerObj of env.reviewers) {
                 // If the reviewer is a User
                 if (reviewerObj.type == 'User') {
                     console.log('Reviewer is a User - ' + reviewerObj.reviewer.login);
@@ -45,14 +46,17 @@ async function run() {
                         console.log(` team membership checked for ${github.context.actor} in team ${reviewerObj.reviewer.slug}`);
                         console.log(` response: ${response.status}`);
                         if (response.status == 200) {
-                            isReviewer = true;
+                            isReviewer = true;                            
                         }
                     }).catch((error) => {
                         console.log(` team membership check failed for ${github.context.actor} in team ${reviewerObj.reviewer.name}`);
                     });;
 
                 }
-            });
+                if(isReviewer){
+                    break;
+                }
+            };
         });
 
         // if the current user is not a reviewer, display the list of reviewers and exit
