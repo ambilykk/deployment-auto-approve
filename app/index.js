@@ -59,7 +59,7 @@ async function run() {
         if (!isReviewer) {
             // Writing to build log            
             core.notice('Auto Approval Not Possible; current user is not a reviewer for the environment(s) - ' + env_name);
-            core.info('Reviewers: ' +reviewers.toString());
+            core.info('Reviewers: ' +reviewers.join(','));
         } else {
             // Approve, in case of there is any pending review requests
             if (typeof env_id !== 'undefined' && env_id.length > 0) {
