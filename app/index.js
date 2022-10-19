@@ -18,7 +18,7 @@ async function run() {
 
         let env_id = [];
         let env_name = '';
-        let reviewers = [];
+        let envReviewers = [];
         let isReviewer = false;
         response.data.forEach(env => {
             env_id.push(env.environment.id);
@@ -31,12 +31,12 @@ async function run() {
                     console.log('Reviewer is a User - ' + reviewerObj.reviewer.login);
                     if (reviewerObj.reviewer.login == github.context.actor) {
                         isReviewer = true;
-                        reviewers.push(reviewerObj.reviewer.login);
+                        envReviewers.push(reviewerObj.reviewer.login);
                     }
                 }
                 // If the reviewer is a Team
                 if (reviewerObj.type == 'Team' && !isReviewer) {
-                    reviewers.push(reviewerObj.reviewer.name);
+                    envReviewers.push(reviewerObj.reviewer.name);
 
                     await octokit.rest.teams.getMembershipForUserInOrg({
                         org: github.context.repo.owner,
@@ -60,7 +60,10 @@ async function run() {
         if (!isReviewer) {
             // Writing to build log            
             core.notice('Auto Approval Not Possible; current user is not a reviewer for the environment(s) - ' + env_name);
-            core.info('Reviewers: ' + reviewers.join(','));
+            core.info('Reviewers: ' + (envReviewers.join(',')));       
+            console.log('reviewers: ' + envReviewers.join(','));
+            console.log('reviewers: ' + envReviewers.toString());
+            return;    
         } else {
             // Approve, in case of there is any pending review requests
             if (typeof env_id !== 'undefined' && env_id.length > 0) {
