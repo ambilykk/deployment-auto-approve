@@ -65,6 +65,10 @@ jobs:
 | GITHUB_TOKEN                 | Yes | PAT Token for access    |
 
 
+## Limitations
+
+- If the workflow jobs defined as dependent workflows (using - needs), then this action will not work
+- If the workflow triggered by a non-reviewer, auto approval will not work
 
 # License
 
