@@ -28,7 +28,7 @@ async function run() {
             run_id: github.context.runId,
             environment_ids: env_id,
             state: 'approved',
-            Comment: 'Auto-Approved by GitHub Action'
+            comment: 'Auto-Approved by GitHub Action'
         });
 
     }).catch((error) => {
