@@ -17,6 +17,7 @@ async function run() {
 
         let env_id = [];
         let env_name = '';
+        let reviewers =[];
         let isReviewer = false;
         response.data.forEach(env => {
             env_id.push(env.environment.id);
@@ -26,13 +27,16 @@ async function run() {
             env.reviewers.forEach(reviewerObj => {
                 // If the reviewer is a User
                 if (reviewerObj.type == 'User') {
-                    console.log('Reviewer is a User '+reviewerObj.reviewer.login);
-                    if (reviewerObj.reviewer.login == github.context.actor) {                        
+                    console.log('Reviewer is a User - ' + reviewerObj.reviewer.login);
+                    if (reviewerObj.reviewer.login == github.context.actor) {
                         isReviewer = true;
+                        reviewers.push(reviewerObj.reviewer.login);
                     }
                 }
                 // If the reviewer is a Team
                 if (reviewerObj.type == 'Team') {
+                    reviewers.push(reviewerObj.reviewer.name);
+
                     octokit.rest.teams.getMembershipForUserInOrg({
                         org: github.context.repo.owner,
                         team_slug: reviewerObj.reviewer.slug,
@@ -43,23 +47,29 @@ async function run() {
                         if (response.status == 200) {
                             isReviewer = true;
                         }
-                    }); 
+                    });
 
                 }
             });
         });
 
-        // Approve, in case of there is any pending review requests
-        if (typeof env_id !== 'undefined' && env_id.length > 0 && isReviewer) {
-            // Approve the pending deployment reviews
-            octokit.rest.actions.reviewPendingDeploymentsForRun({
-                owner: github.context.repo.owner,
-                repo: github.context.repo.repo,
-                run_id: github.context.runId,
-                environment_ids: env_id,
-                state: 'approved',
-                comment: 'Auto-Approved by GitHub Action for environments ' + env_name
-            });
+        // if the current user is not a reviewer, display the list of reviewers and exit
+        if (!isReviewer) {
+            core.summary.addDetails('Reviewers', reviewers.join(','));
+        } else {
+
+            // Approve, in case of there is any pending review requests
+            if (typeof env_id !== 'undefined' && env_id.length > 0) {
+                // Approve the pending deployment reviews
+                octokit.rest.actions.reviewPendingDeploymentsForRun({
+                    owner: github.context.repo.owner,
+                    repo: github.context.repo.repo,
+                    run_id: github.context.runId,
+                    environment_ids: env_id,
+                    state: 'approved',
+                    comment: 'Auto-Approved by GitHub Action for environments ' + env_name
+                });
+            }
         }
 
     }).catch((error) => {
