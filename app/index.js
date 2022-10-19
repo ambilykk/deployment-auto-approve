@@ -16,20 +16,24 @@ async function run() {
         console.log(`Response data`);
         console.log(response.data);
 
-        let env_id =[];
+        let env_id = [];
         response.data.forEach(env => {
-            env_id.push(env.environment.id);   
-            console.log(env.environment);         
+            env_id.push(env.environment.id);
+            console.log(env.environment);
         });
-        // Approve the pending deployment reviews
-        octokit.rest.actions.reviewPendingDeploymentsForRun({
-            owner: github.context.repo.owner,
-            repo: github.context.repo.repo,
-            run_id: github.context.runId,
-            environment_ids: env_id,
-            state: 'approved',
-            comment: 'Auto-Approved by GitHub Action'
-        });
+
+        // Approve, in case of pending review requests
+        if (env_id.length > 0) {
+            // Approve the pending deployment reviews
+            octokit.rest.actions.reviewPendingDeploymentsForRun({
+                owner: github.context.repo.owner,
+                repo: github.context.repo.repo,
+                run_id: github.context.runId,
+                environment_ids: env_id,
+                state: 'approved',
+                comment: 'Auto-Approved by GitHub Action'
+            });
+        }
 
     }).catch((error) => {
         console.log(error);
