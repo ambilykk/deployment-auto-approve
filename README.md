@@ -3,7 +3,7 @@ Automatic approval of pending deployments that are waiting on approval by a requ
 
 *Note: Required reviewers with read access to the repository contents and deployments can use this action to bypass the approval*
 
-**User Scenario ** There is no out of the box control to pre-approve workflows. The jobs that are protected by environment must be approved only once all previous jobs are completed. As a result, we had to come back to workflow at the right time to approve steps for the changes we are confident.
+**User Scenario - There is no out of the box control to pre-approve workflows. The jobs that are protected by environment must be approved only once all previous jobs are completed. As a result, we had to come back to workflow at the right time to approve steps for the changes we are confident.**
 
 
 # How to Use the Action
@@ -18,6 +18,9 @@ Include the deployment-auto-approve action in your workflow.
 
 Following is the sample code for integrating this action with your workflow. 
 Sample workflow defines three jobs - First, Second and Third. Third job runs on environment 'demo', configured with [Environment Protection Rule (Required reviewers)](https://docs.github.com/en/enterprise-cloud@latest/actions/deployment/targeting-different-environments/using-environments-for-deployment#environment-protection-rules).
+
+
+![env protection rule](https://user-images.githubusercontent.com/10282550/196625488-6ecf132d-8e1f-443f-8c22-7a8a0223a314.png)
 
 Auto Approval is controlled using the workflow input - **approve_deploy**
 
