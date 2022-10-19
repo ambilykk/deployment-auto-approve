@@ -14,10 +14,10 @@ async function run() {
         run_id: github.context.runId
     }).then((response) => {
         console.log(`Response data`);
-        console.log(response);
+        console.log(response.data);
 
         let env_id =[];
-        response.forEach(env => {
+        response.data.forEach(env => {
             env_id.push(env.environment.id);   
             console.log(env.environment);         
         });
