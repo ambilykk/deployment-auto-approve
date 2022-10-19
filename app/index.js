@@ -55,10 +55,12 @@ async function run() {
 
                 }
                 if(isReviewer){
+                    console.log('break from inner loop');
                     break;
                 }
             };
             if(isReviewer){
+                console.log('break from outer loop');
                 break;
             }
         };
