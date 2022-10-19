@@ -23,7 +23,7 @@ async function run() {
         });
 
         // Approve, in case of pending review requests
-        if (env_id.length > 0) {
+        if (typeof env_id !== 'undefined' && env_id.length > 0) {
             // Approve the pending deployment reviews
             octokit.rest.actions.reviewPendingDeploymentsForRun({
                 owner: github.context.repo.owner,
