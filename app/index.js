@@ -57,9 +57,9 @@ async function run() {
 
         // if the current user is not a reviewer, display the list of reviewers and exit
         if (!isReviewer) {
-            core.summary.addDetails('Reviewers', reviewers.join(','));
+            core.summary.addHeading(' :fire: Auto Approval Status');
+            core.summary.addQuote('Reviewers: ' +reviewers.toString());
         } else {
-
             // Approve, in case of there is any pending review requests
             if (typeof env_id !== 'undefined' && env_id.length > 0) {
                 // Approve the pending deployment reviews
@@ -71,6 +71,9 @@ async function run() {
                     state: 'approved',
                     comment: 'Auto-Approved by GitHub Action for environments ' + env_name
                 });
+
+                core.summary.addHeading(' :white_check_mark: Auto Approval Status');
+                core.summary.addQuote('Auto-Approved by GitHub Action. Reviewer: ' + github.context.actor);
             }
         }
 
