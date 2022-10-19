@@ -28,10 +28,9 @@ async function run() {
             env.reviewers.forEach(async reviewerObj => {
                 // If the reviewer is a User
                 if (reviewerObj.type == 'User' && !isReviewer) {
-                    console.log('Reviewer is a User - ' + reviewerObj.reviewer.login);
+                    envReviewers.push(reviewerObj.reviewer.login);
                     if (reviewerObj.reviewer.login == github.context.actor) {
                         isReviewer = true;
-                        envReviewers.push(reviewerObj.reviewer.login);
                     }
                 }
                 // If the reviewer is a Team
@@ -51,9 +50,7 @@ async function run() {
                     }).catch((error) => {
                         console.log(` team membership check failed for ${github.context.actor} in team ${reviewerObj.reviewer.name}`);
                     });;
-
                 }
-                console.log('step Reviewers: ' + (envReviewers.join(','))); 
             });
         });
 
@@ -61,8 +58,8 @@ async function run() {
         if (!isReviewer) {
             // Writing to build log            
             core.notice('Auto Approval Not Possible; current user is not a reviewer for the environment(s) - ' + env_name);
-            core.info('Reviewers: ' + (envReviewers.join(','))); 
-            return;    
+            core.info('Reviewers: ' + (envReviewers.join(',')));
+            return;
         } else {
             // Approve, in case of there is any pending review requests
             if (typeof env_id !== 'undefined' && env_id.length > 0) {
