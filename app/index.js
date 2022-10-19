@@ -8,12 +8,13 @@ const octokit = github.getOctokit(GITHUB_TOKEN);
 
 async function run() {
 
-    // get all pending deployment reviews for the current workflow run
-    await octokit.rest.actions.getPendingDeploymentsForRun({
-        owner: github.context.repo.owner,
-        repo: github.context.repo.repo,
-        run_id: github.context.runId
-    }).then((response) => {
+    try {
+        // get all pending deployment reviews for the current workflow run
+        let response = await octokit.rest.actions.getPendingDeploymentsForRun({
+            owner: github.context.repo.owner,
+            repo: github.context.repo.repo,
+            run_id: github.context.runId
+        });
 
         let env_id = [];
         let env_name = '';
@@ -37,7 +38,7 @@ async function run() {
                 if (reviewerObj.type == 'Team' && !isReviewer) {
                     reviewers.push(reviewerObj.reviewer.name);
 
-                    octokit.rest.teams.getMembershipForUserInOrg({
+                    await octokit.rest.teams.getMembershipForUserInOrg({
                         org: github.context.repo.owner,
                         team_slug: reviewerObj.reviewer.slug,
                         username: github.context.actor
@@ -59,12 +60,12 @@ async function run() {
         if (!isReviewer) {
             // Writing to build log            
             core.notice('Auto Approval Not Possible; current user is not a reviewer for the environment(s) - ' + env_name);
-            core.info('Reviewers: ' +reviewers.join(','));
+            core.info('Reviewers: ' + reviewers.join(','));
         } else {
             // Approve, in case of there is any pending review requests
             if (typeof env_id !== 'undefined' && env_id.length > 0) {
                 // Approve the pending deployment reviews
-                octokit.rest.actions.reviewPendingDeploymentsForRun({
+                await octokit.rest.actions.reviewPendingDeploymentsForRun({
                     owner: github.context.repo.owner,
                     repo: github.context.repo.repo,
                     run_id: github.context.runId,
@@ -79,9 +80,9 @@ async function run() {
             }
         }
 
-    }).catch((error) => {
+    } catch (error) {
         console.log(error);
-    });
+    };
 }
 
 // run the action code
