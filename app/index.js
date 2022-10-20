@@ -64,7 +64,7 @@ async function run() {
 
         // if the environment passed was not found in the list of environment to pre-approve 
         if(!isEnvFound) {
-            console.warn(`env '${envIn} is not part of the workflow or deployment was already approved by one of the reviewers`);
+            core.warning(`env '${envIn}' is not part of the workflow or deployment was already approved by one of the reviewers`);
             return;
         }
         // if the current user is not a reviewer, display the list of reviewers and exit
