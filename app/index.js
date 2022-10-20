@@ -8,6 +8,7 @@ const octokit = github.getOctokit(GITHUB_TOKEN);
 
 // get the environment to pre-approve deployment
 const envIn = core.getInput('environment');
+console.log(`Approving pending deployments for ${envIn} environment.`);
 
 async function run() {
 
@@ -24,7 +25,7 @@ async function run() {
         let envReviewers = [];
         let isReviewer = false;
         response.data.forEach(env => {
-            if (env.environment.includes(envIn)) {
+            if (env.environment.name ==envIn.name) {
                 env_id.push(env.environment.id);
                 env_name = env_name + env.environment.name + ',';
 
