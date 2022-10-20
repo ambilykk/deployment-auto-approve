@@ -58,6 +58,16 @@ jobs:
          echo "Third job"        
 ```
 
+### Responses
+
+1. Notification - when the deployment-auto-approve action executed by a user who is not added as a reviewer
+![Screenshot 2022-10-20 at 12 08 25 PM](https://user-images.githubusercontent.com/10282550/196874957-b1942e02-2636-408e-86d8-408f96ee912b.png)
+
+2. Deployment Review & Summary - when executed by a reviewer
+
+![Screenshot 2022-10-20 at 12 13 17 PM](https://user-images.githubusercontent.com/10282550/196875307-414a9b9f-93a6-4efc-b3f6-10e9e159e958.png)
+
+
 ## Parameters
 
 | Name                           | Required  | Description                                                                      |
