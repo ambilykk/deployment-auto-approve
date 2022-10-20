@@ -7,6 +7,11 @@ inputs:
   GITHUB_TOKEN:
     description: 'GitHub token'
     required: true
+  environment:
+    type: environment
+  environment:
+    description: 'Environment to pre-approve deployment'
+    required: true
 runs:
   using: 'node16'
   main: 'app/index.js'
