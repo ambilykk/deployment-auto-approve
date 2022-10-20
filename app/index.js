@@ -24,8 +24,10 @@ async function run() {
         let env_name = '';
         let envReviewers = [];
         let isReviewer = false;
+        let isEnvFound = false;
         response.data.forEach(env => {
-            if (env.environment.name ==envIn.name) {
+            if (env.environment.name.toLowerCase() == envIn.toLowerCase()) {
+                isEnvFound = true;
                 env_id.push(env.environment.id);
                 env_name = env_name + env.environment.name + ',';
 
@@ -60,6 +62,11 @@ async function run() {
             }
         });
 
+        // if the environment passed was not found in the list of environment to pre-approve 
+        if(!isEnvFound) {
+            console.warn(`env '${envIn} is not part of the workflow or deployment was already approved by one of the reviewers`);
+            return;
+        }
         // if the current user is not a reviewer, display the list of reviewers and exit
         if (!isReviewer) {
             // Writing to build log            
