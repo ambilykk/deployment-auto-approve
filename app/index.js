@@ -8,7 +8,7 @@ const octokit = github.getOctokit(GITHUB_TOKEN);
 
 // get the environment to pre-approve deployment
 const envIn = core.getInput('environment');
-console.log(`Approving pending deployments for ${envIn} environment.`);
+console.log(`Auto approval requested for ${envIn} environment.`);
 
 async function run() {
 
