@@ -48,6 +48,7 @@ jobs:
        uses: techrill88/deployment-auto-approve@main
        with:
          GITHUB_TOKEN: ${{secrets.GH_TOKEN}}   
+         environment: ${{ inputs.environment }}
           
   Third:
     runs-on: ubuntu-latest  
@@ -60,12 +61,18 @@ jobs:
 
 ### Responses
 
-1. Notification - when the deployment-auto-approve action executed by a user who is not added as a reviewer
+1. **Notification - when the deployment-auto-approve action executed by a user who is not added as a reviewer**
 ![Screenshot 2022-10-20 at 12 08 25 PM](https://user-images.githubusercontent.com/10282550/196874957-b1942e02-2636-408e-86d8-408f96ee912b.png)
 
-2. Deployment Review & Summary - when executed by a reviewer
+2. **The environment passed was not found in the list of environment to pre-approve**
 
-![Screenshot 2022-10-20 at 12 13 17 PM](https://user-images.githubusercontent.com/10282550/196875307-414a9b9f-93a6-4efc-b3f6-10e9e159e958.png)
+   ![Screenshot 2022-10-20 at 2 11 04 PM](https://user-images.githubusercontent.com/10282550/196900446-7c4e2abf-6a8c-4154-bec0-86d36388cba6.png)
+
+
+3. **Deployment Review & Summary - when executed by a reviewer**
+
+   ![Screenshot 2022-10-20 at 12 13 17 PM](https://user-images.githubusercontent.com/10282550/196875307-414a9b9f-93a6-4efc-b3f6-10e9e159e958.png)
+
 
 
 ## Parameters
@@ -73,6 +80,7 @@ jobs:
 | Name                           | Required  | Description                                                                      |
 |--------------------------------|------------|----------------------------------------------------------------------|
 | GITHUB_TOKEN                 | Yes | PAT Token for access    |
+| environment                  | Yes | Environment to pre-approve deployment |
 
 
 ## Limitations
