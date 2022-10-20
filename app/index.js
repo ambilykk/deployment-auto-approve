@@ -64,12 +64,13 @@ async function run() {
 
         // if the environment passed was not found in the list of environment to pre-approve 
         if(!isEnvFound) {
+            console.log(`ERROR: environment ${envIn} not found.`);
             core.warning(`env '${envIn}' is not part of the workflow or deployment was already approved by one of the reviewers`);
             return;
         }
         // if the current user is not a reviewer, display the list of reviewers and exit
         if (!isReviewer) {
-            // Writing to build log            
+            console.log(`ERROR: ${github.context.actor} is not a reviewer in ${envReviewers}`);         
             core.notice('Auto Approval Not Possible; current user is not a reviewer for the environment(s) - ' + env_name.trimEnd(','));
             core.info('Reviewers: ' + (envReviewers.join(',')));
             return;
