@@ -9,7 +9,6 @@ inputs:
     required: true
   environment:
     type: environment
-  environment:
     description: 'Environment to pre-approve deployment'
     required: true
 runs:
