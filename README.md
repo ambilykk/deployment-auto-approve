@@ -45,7 +45,7 @@ jobs:
         
      - name: Auto approve
        if: ${{ inputs.approve_deploy == 'approve' }}
-       uses: techrill88/deployment-auto-approve@main
+       uses: ambilykk/deployment-auto-approve@main
        with:
          GITHUB_TOKEN: ${{secrets.GH_TOKEN}}   
          environment: ${{ inputs.environment }}
